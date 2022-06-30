@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.13.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // react scripts goes here
+      class Child extends React.Component {
+        render() {
+          return (
+            <div>
+              Counter Value from my mom/dad: {this.props.counter}
+              <button onClick={this.props.reset}>reset</button>
+            </div>
+          );
+        }
+      }
+
+      class MainComponent extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            counter: 10,
+            words: "Hello World from Charlie",
+          };
+          this.regularFunction = this.regularFunction.bind(this);
+        }
+        render() {
+          return (
+            <div>
+              React - State
+              <div>Counter: {this.state.counter}</div>
+              <button onClick={this.regularFunction}>reset 0</button>
+              <button onClick={this.regularFunctionWithoutBinding.bind(this)}>
+                -10
+              </button>
+              <button onClick={() => this.regularFunctionWithoutBinding()}>
+                another -10
+              </button>
+              <button onClick={this.arrowFunction}>+10</button>
+              <button onClick={() => alert(this.state.counter)}>say hi</button>
+              <br />
+              <Child
+                counter={this.state.counter}
+                reset={this.regularFunction}
+              />
+            </div>
+          );
+        }
+        regularFunction() {
+          // option1 - becuase it won't
+          // this.state.counter = 0;
+
+          // option2
+          this.setState({ counter: 0 });
+        }
+        regularFunctionWithoutBinding() {
+          const newState = {
+            counter: this.state.counter - 10,
+          };
+          this.setState(newState);
+        }
+
+        arrowFunction = () => {
+          const newState = {
+            counter: this.state.counter + 10,
+          };
+          this.setState(newState);
+        };
+      }
+      ReactDOM.render(<MainComponent />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
